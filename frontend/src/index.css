@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+:root{
+  background-image: linear-gradient(to right, rgb(27, 26, 26), rgb(44, 41, 41), rgb(27, 26, 26));
+  /* font-family: "Special Gothic", sans-serif; */
+  font-family: "Source Sans Pro";
+  height: 100vh;
+}
