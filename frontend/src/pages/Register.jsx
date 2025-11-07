@@ -11,39 +11,33 @@ export default function Register() {
     const isFormValid = !errors.username && !errors.email && !errors.password
 
     const handleChange = (event) => {
-        setFormData({...formData, [event.target.name]: event.target.value.trim()})
-
-        if(event.target.name === "username"){
-            formData.username.length<4 ? setErrors({...errors, username: "Username must be at least 4 chars long!"}) : setErrors({...errors, username: ""})
+        const {name, value} = event.target;
+        setFormData({...formData, [name]: value.trim()})
+        
+        let error = ""
+        if(name === "username" && value.trim().length<4){
+            error = "Username must be at least 4 chars long";
         }
 
-        if(event.target.name === "email"){
-            !emailValidator.test(formData.email) ? setErrors({...errors, email: "Enter valid email!"}) : setErrors({...errors, email: ""})
+        if(name === "email" && !emailValidator.test(value.trim())){
+            error = "Enter valid email!"
         }
 
-        if(event.target.name === "password"){
-            formData.password.length<8 ? setErrors({...errors, password: "Password must be at least 8 chars long!"}) : setErrors({...errors, password: ""})
+        if(name === "password" && value.length<8){
+            error = "Password must be at least 8 chars long!";
         }
 
+        setErrors(prev => ({...prev, [name]: error}));
     }
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(errors)
 
         let submitErrors = {}
-        
-        if(!formData.username){
-            submitErrors.username = "Username is required!"
-        }
-    
-        if(!formData.email){
-            submitErrors.email = "Email is required!"
-        }
 
-        if(!formData.password){
-            submitErrors.password = "Password is required!"
-        }
+        Object.entries(formData).forEach(([key, value]) => {
+            if(value.trim() === "") submitErrors[key] = `${key[0].toUpperCase() + key.slice(1)} is required!`
+        })
 
         setErrors(submitErrors)
 

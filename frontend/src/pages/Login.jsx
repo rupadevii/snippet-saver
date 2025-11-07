@@ -11,32 +11,30 @@ export default function Login() {
   const emailValidator = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   function handleChange(e) {
-    setFormData({ ...formData, [e.target.name]: e.target.value.trim() });
+    const {name, value} = e.target;
+    setFormData({...formData, [name]: value.trim()})
 
-    if (e.target.name === "email") {
-      !emailValidator.test(formData.email)
-        ? setErrors({ ...errors, email: "Enter valid email!" })
-        : setErrors({ ...errors, email: "" });
+    let error = ""
+    
+    if(name === "email" && !emailValidator.test(value.trim())){
+      error = "Enter valid email!"
+    }
+    
+    if(name === "password" && value.trim().length<8){
+        error = "Enter valid password!";
     }
 
-    if (e.target.name === "password") {
-      formData.password.length < 8
-        ? setErrors({ ...errors, password: "Enter valid password" })
-        : setErrors({ ...errors, password: "" });
-    }
+    setErrors(prev => ({...prev, [name]: error}));
   }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     let submitErrors = {};
-    if (!formData.email) {
-      submitErrors.email = "Email is required!";
-    }
-
-    if (!formData.password) {
-      submitErrors.password = "Password is required!";
-    }
+    
+    Object.entries(formData).forEach(([key, value]) => {
+      if(value.trim() === "") submitErrors[key] = `${key[0].toUpperCase() + key.slice(1)} is required!`
+    })
 
     setErrors(submitErrors);
 

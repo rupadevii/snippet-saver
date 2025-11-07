@@ -11,17 +11,9 @@ export default function SnippetForm() {
   function handleChange(e){
     setFormData({...formData, [e.target.name]: e.target.value})
 
-    if(formData.title){
-      setErrors({...errors, title:""})
-    }
-
-    if(formData.language){
-      setErrors({...errors, language:""})
-    }
-
-    if(formData.code){
-      setErrors({...errors, code:""})
-    }
+    Object.entries(formData).forEach(([key, value]) => {
+      if(value.trim()) setErrors(prev => ({...prev, [key]: ""}))
+    })
   }
   
   const handleSubmit = async (e) => {
@@ -29,17 +21,9 @@ export default function SnippetForm() {
 
     let submitErrors = {}
         
-    if(!formData.title){
-      submitErrors.title = "Enter title!"
-    }
-
-    if(!formData.language){
-      submitErrors.language = "Language is required"
-    }
-
-    if(!formData.code){
-      submitErrors.code = "Enter code!"
-    }
+    if(!formData.title) submitErrors.title = "Enter title!"
+    if(!formData.language) submitErrors.language = "Language is required"
+    if(!formData.code) submitErrors.code = "Enter code!"
 
     setErrors(submitErrors)
 
