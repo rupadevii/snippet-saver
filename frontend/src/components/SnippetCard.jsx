@@ -5,7 +5,9 @@ export default function SnippetCard(props) {
       <h2 className="text-xl">{props.snippet.title}</h2>
       <p className="text-zinc-400"><small>{props.snippet.description}</small></p>
       <span><i>{props.snippet.language}</i></span>
-      <p>{props.snippet.code}</p>
+      <div>
+        <code>{props.snippet.code}</code>
+      </div>
     </div>
   )
 }

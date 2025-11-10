@@ -1,116 +1,146 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Editor from "@monaco-editor/react";
+import { languages } from "../utils/languages";
 
 export default function SnippetForm() {
-  const [formData, setFormData] = useState({title: "", language: "", code: "", description: ""});
+  const [formData, setFormData] = useState({
+    title: "",
+    language: "",
+    code: "",
+    description: "",
+  });
   const navigate = useNavigate();
   const URL = import.meta.env.VITE_API_URL;
-  const [errors, setErrors] = useState({title: "", language: "", code: ""});
-  const isFormValid = !errors.title && !errors.language && !errors.code 
-  
-  function handleChange(e){
-    setFormData({...formData, [e.target.name]: e.target.value})
+  const [errors, setErrors] = useState({ title: "", language: "", code: "" });
+  const isFormValid = !errors.title && !errors.language && !errors.code;
+
+  function handleChange(e) {
+    console.log(e.target.value);
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
     Object.entries(formData).forEach(([key, value]) => {
-      if(value.trim()) setErrors(prev => ({...prev, [key]: ""}))
-    })
+      if (value.trim()) setErrors((prev) => ({ ...prev, [key]: "" }));
+    });
   }
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let submitErrors = {};
 
-    let submitErrors = {}
-        
-    if(!formData.title) submitErrors.title = "Enter title!"
-    if(!formData.language) submitErrors.language = "Language is required"
-    if(!formData.code) submitErrors.code = "Enter code!"
+    if (!formData.title) submitErrors.title = "Enter title!";
+    if (!formData.language) submitErrors.language = "Select language!";
+    if (!formData.code) submitErrors.code = "Enter code!";
 
-    setErrors(submitErrors)
+    setErrors(submitErrors);
 
-    if(formData.title && formData.language && formData.code){
+    if (formData.title && formData.language && formData.code) {
       const token = localStorage.getItem("token");
 
-      try{
+      try {
         const res = await fetch(`${URL}/snippets/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(formData)
+          body: JSON.stringify(formData),
         });
-  
-        await res.json()
-        setFormData({title: "", language: "", code: "", description: ""});
-  
-        if(res.ok){
+
+        await res.json();
+        setFormData({ title: "", language: "", code: "", description: "" });
+
+        if (res.ok) {
           setTimeout(() => {
-            navigate('/snippets')
-          }, 1500)
+            navigate("/snippets");
+          }, 1500);
         }
-      }
-      catch(error){
+      } catch (error) {
         console.error(error);
       }
     }
-
-  }
+  };
 
   return (
-    <main className='flex justify-center items-center pt-6'>
-      <div className="rounded-3xl px-10 py-7 bg-stone-900 text-white shadow-2xl">
-          <h2 className='text-3xl text-center mb-5'>Add a snippet</h2>
-          <form 
-            noValidate 
-            className='flex flex-col justify-center items-center' 
-            onSubmit={handleSubmit}>
-              <input 
-                name="title" 
-                type="text" 
-                placeholder="Enter title" 
-                className='m-3 p-3 w-100 border border-zinc-500 rounded-sm'
+    <main className="flex flex-col justify-center items-center pt-6">
+      <h2 className="text-3xl text-center m-5 text-white">Add snippet</h2>
+      <div className="rounded-3xl px-10 py-7 m-5 text-white bg-stone-900">
+        <form
+          noValidate
+          className="flex flex-col justify-center items-center"
+          onSubmit={handleSubmit}
+        >
+          <div className="w-full flex items-center">
+            <div>
+              <input
+                name="title"
+                type="text"
+                placeholder="Enter title"
+                className="m-3 p-3 w-157 border border-zinc-500 rounded-sm mr-4"
                 value={formData.title}
                 onChange={handleChange}
               />
-              {errors.title && (<p className='text-red-600 self-start ml-3'>{errors.title}</p>)}
+              {errors.title && (
+                <p className="text-red-600 self-start ml-3">{errors.title}</p>
+              )}
+            </div>
 
-              <input 
-                name="language" 
-                type="text" 
-                placeholder="Enter language" 
-                className='m-3 p-3 w-100 border border-zinc-500 rounded-sm'
-                value={formData.language}
+            <div>
+              <select
+                name="language"
+                className="p-3 my-3 border w-100 border-zinc-500 rounded-sm"
                 onChange={handleChange}
-              />
-              {errors.language && (<p className='text-red-600 self-start ml-3'>{errors.language}</p>)}
+              >
+                {languages.map((language, index) => (
+                  <option className="bg-zinc-900" value={language} key={index}>
+                    {language}
+                  </option>
+                ))}
+              </select>
 
-              <textarea 
-                name="code" 
-                rows="7" 
-                placeholder='Enter code' 
-                className='m-3 p-3 w-100 border border-zinc-500 rounded-sm'
-                value={formData.code}
-                onChange={handleChange}
-              />
-              {errors.code && (<p className='text-red-600 self-start ml-3'>{errors.code}</p>)}
+              {errors.language && (
+                <p className="text-red-600 self-start ml-3">
+                  {errors.language}
+                </p>
+              )}
+            </div>
+          </div>
 
-              <textarea 
-                name="description" 
-                rows="2" 
-                placeholder='Enter description' 
-                className='m-3 p-3 w-100 border border-zinc-500 rounded-sm'
-                value={formData.description}
-                onChange={handleChange}
-              />
+          <textarea
+            name="description"
+            rows="1"
+            placeholder="Enter description (Optional)"
+            className="m-3 p-3 w-260 rounded-sm border-b border-gray-400"
+            value={formData.description}
+            onChange={handleChange}
+          />
 
-              <button 
-                type="submit" 
-                className='bg-purple-900 px-3 py-2 rounded-xl mt-2 cursor-pointer hover:bg-purple-800 disabled:bg-purple-950 disabled:cursor-not-allowed' 
-                disabled={!isFormValid}>
-                Add snippet
-              </button>
-          </form>
+          <Editor
+            height="90vh"
+            width="70vw"
+            language="javascript"
+            theme="vs-dark"
+            defaultValue="// some comment"
+            onChange={(value) => {
+              setFormData((prev) => ({ ...prev, code: value }));
+            }}
+            value={formData.code}
+            className="mt-5 mb-3"
+            name="code"
+          />
+          {errors.code && (
+            <p className="text-red-600 self-start ml-3">{errors.code}</p>
+          )}
+
+          <button
+            type="submit"
+            className="bg-purple-900 px-3 py-2 rounded-xl mt-2 cursor-pointer hover:bg-purple-800 disabled:bg-purple-950 disabled:cursor-not-allowed"
+            disabled={!isFormValid}
+          >
+            Add snippet
+          </button>
+        </form>
       </div>
     </main>
-  )
+  );
 }
