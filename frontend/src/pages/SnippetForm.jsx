@@ -62,62 +62,58 @@ export default function SnippetForm() {
   };
 
   return (
-    <main className="flex flex-col justify-center items-center pt-6">
+    <main className="flex flex-col pt-6 items-center">
       <h2 className="text-3xl text-center m-5 text-white">Add snippet</h2>
-      <div className="rounded-3xl px-10 py-7 m-5 text-white bg-stone-900">
+      <div className="rounded-3xl px-10 py-7 text-white">
         <form
           noValidate
-          className="flex flex-col justify-center items-center"
+          className="flex flex-col"
           onSubmit={handleSubmit}
         >
-          <div className="w-full flex items-center">
-            <div>
-              <input
-                name="title"
-                type="text"
-                placeholder="Enter title"
-                className="m-3 p-3 w-157 border border-zinc-500 rounded-sm mr-4"
-                value={formData.title}
-                onChange={handleChange}
-              />
-              {errors.title && (
-                <p className="text-red-600 self-start ml-3">{errors.title}</p>
-              )}
-            </div>
-
-            <div>
-              <select
-                name="language"
-                className="p-3 my-3 border w-100 border-zinc-500 rounded-sm"
-                onChange={handleChange}
-              >
-                {languages.map((language, index) => (
-                  <option className="bg-zinc-900" value={language} key={index}>
-                    {language}
-                  </option>
-                ))}
-              </select>
-
-              {errors.language && (
-                <p className="text-red-600 self-start ml-3">
-                  {errors.language}
-                </p>
-              )}
-            </div>
-          </div>
+          <input
+            name="title"
+            type="text"
+            placeholder="Enter title"
+            className="my-3 p-3 w-full border border-zinc-500 rounded-sm"
+            value={formData.title}
+            onChange={handleChange}
+          />
+          {errors.title && (
+            <p className="text-red-600 self-start ml-3">{errors.title}</p>
+          )}
 
           <textarea
             name="description"
             rows="1"
             placeholder="Enter description (Optional)"
-            className="m-3 p-3 w-260 rounded-sm border-b border-gray-400"
+            className="my-3 p-3 w-[60vw] rounded-sm border-b border-gray-400"
             value={formData.description}
             onChange={handleChange}
           />
 
+          <label for="language" className="mt-3">Choose language:</label>
+          <select
+            name="language"
+            id="language"
+            className="p-3 my-3 border w-100 border-zinc-500 rounded-sm"
+            onChange={handleChange}
+          >
+            {languages.map((language, index) => (
+              <option className="bg-zinc-900" value={language} key={index}>
+                {language}
+              </option>
+            ))}
+          </select>
+
+          {errors.language && (
+            <p className="text-red-600 self-start ml-3">
+              {errors.language}
+            </p>
+          )}
+
           <Editor
             height="90vh"
-            width="70vw"
+            width="60vw"
             language="javascript"
             theme="vs-dark"
             defaultValue="// some comment"
@@ -134,7 +130,7 @@ export default function SnippetForm() {
 
           <button
             type="submit"
-            className="bg-purple-900 px-3 py-2 rounded-xl mt-2 cursor-pointer hover:bg-purple-800 disabled:bg-purple-950 disabled:cursor-not-allowed"
+            className="bg-purple-900 mx-auto px-3 py-2 rounded-xl mt-2 cursor-pointer hover:bg-purple-800 disabled:bg-purple-950 disabled:cursor-not-allowed"
             disabled={!isFormValid}
           >
             Add snippet

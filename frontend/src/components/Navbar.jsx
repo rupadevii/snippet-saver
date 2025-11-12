@@ -18,7 +18,7 @@ export default function Navbar() {
   }
 
   return (
-    <header>
+    <header className='sticky top-0 z-10'>
         <nav className='py-5 px-30 flex text-white justify-between bg-purple-900'>
             <div>SnippetSaver</div>
             <div>

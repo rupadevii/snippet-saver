@@ -47,7 +47,7 @@ export default function Login() {
         });
 
         const data = await res.json();
-        console.log(data)
+        
         if (res.ok) {
           if (data.token) {
             localStorage.setItem("token", data.token);
@@ -65,8 +65,6 @@ export default function Login() {
       }
     }
   };
-
-  // console.log(msg)
 
   return (
     <main className="flex justify-center items-center pt-24">
