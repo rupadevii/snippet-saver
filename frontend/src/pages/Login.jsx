@@ -71,8 +71,7 @@ export default function Login() {
       <div className="rounded-3xl px-5 py-14 bg-stone-900 text-white shadow-2xl text-center w-[300px] md:w-[400px] lg:w-[450px]">
         <h2 className="text-2xl mb-7">
           Save your code snippets here. <br />
-          Access them easily. <br />
-          Anytime.
+          Access them easily.
         </h2>
         <form
           noValidate

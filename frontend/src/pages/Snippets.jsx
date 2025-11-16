@@ -18,9 +18,9 @@ export default function Snippets() {
             "Authorization": `Bearer ${token}`
           }
         })
-        const data = await res.json()
-  
-        setSnippets(data)
+        const data = await res.json();
+
+        setSnippets(data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)))
       }
       catch(error){
         console.log('There was an error in displaying the snippets', error)
@@ -45,7 +45,7 @@ export default function Snippets() {
               <div className={`text-white hover:bg-purple-900 cursor-pointer p-3 mt-4 ${!selectedID ? 'bg-purple-900' : ''}`} onClick={() => setSelectedID(null)}>All</div>
               <ul>
                 {snippets.map((snippet) => (
-                  <li key={snippet.id} className={`text-white hover:bg-purple-900 cursor-pointer p-3 ${selectedID === snippet.id ? 'bg-purple-900' : ''}`} onClick={() => setSelectedID(snippet.id)}>{snippet.title}</li>
+                  <li key={snippet.id} className={`text-white hover:bg-purple-900 my-1 cursor-pointer p-3 ${selectedID === snippet.id ? 'bg-purple-900' : ''}`} onClick={() => setSelectedID(snippet.id)}>{snippet.title}</li>
                 ))}
               </ul>
             </aside>

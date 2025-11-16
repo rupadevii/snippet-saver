@@ -16,7 +16,6 @@ export default function SnippetForm() {
   const isFormValid = !errors.title && !errors.language && !errors.code;
 
   function handleChange(e) {
-    console.log(e.target.value);
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
     Object.entries(formData).forEach(([key, value]) => {
@@ -91,7 +90,7 @@ export default function SnippetForm() {
             onChange={handleChange}
           />
 
-          <label for="language" className="mt-3">Choose language:</label>
+          <label htmlFor="language" className="mt-3">Choose language:</label>
           <select
             name="language"
             id="language"

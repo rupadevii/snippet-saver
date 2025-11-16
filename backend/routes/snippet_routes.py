@@ -15,7 +15,8 @@ def get_snippets():
         "title": s.title,
         "code": s.code,
         "language": s.language,
-        "description": s.description
+        "description": s.description,
+        "created_at": s.created_at
     } for s in snippets]), 200
 
 @snippet_routes.route("/", methods=["POST"])
