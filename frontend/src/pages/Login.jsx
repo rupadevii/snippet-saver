@@ -68,7 +68,7 @@ export default function Login() {
 
   return (
     <main className="flex justify-center items-center pt-24">
-      <div className="rounded-3xl px-5 py-14 bg-stone-900 text-white shadow-2xl text-center w-[300px] md:w-[400px] lg:w-[450px]">
+      <div className="rounded-xl px-5 py-14 bg-stone-900 text-white shadow-2xl text-center w-[300px] md:w-[400px] lg:w-[450px]">
         <h2 className="text-2xl mb-7">
           Save your code snippets here. <br />
           Access them easily.
@@ -112,7 +112,7 @@ export default function Login() {
           </p>
           <button
             type="submit"
-            className="bg-purple-900 px-3 py-2 rounded-xl mt-2 cursor-pointer hover:bg-purple-800 disabled:bg-purple-950 disabled:cursor-not-allowed"
+            className="bg-purple-900 px-3 py-2 rounded-md mt-2 cursor-pointer hover:bg-purple-800 disabled:bg-purple-950 disabled:cursor-not-allowed"
             disabled={!isFormValid}
           >
             Login

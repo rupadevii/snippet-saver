@@ -25,11 +25,27 @@ export default function Navbar() {
               {token ? (
                 <ul className='flex gap-10'>
                   {addSnippet ? (
-                    <li><Link to="/snippets">Snippets</Link></li>
+                    <li>
+                      <Link 
+                        to="/snippets"
+                        className='hover:underline underline-offset-2'>
+                          Snippets
+                      </Link>
+                    </li>
                   ) : (
-                    <li><Link to="/add-snippet">Add Snippet</Link></li>
+                    <li>
+                      <Link 
+                        to="/add-snippet" 
+                        className='hover:underline underline-offset-2'>
+                          Add Snippet
+                      </Link>
+                    </li>
                   )}
-                  <li onClick={handleLogOut} className='cursor-pointer'>Logout</li>
+                  <li 
+                    onClick={handleLogOut} 
+                    className='cursor-pointer hover:underline underline-offset-2'>
+                      Logout
+                  </li>
                 </ul>
               ) : (
                 <ul className='flex gap-10'>

@@ -40,7 +40,7 @@ export default function Snippets() {
       {snippets.length>0 ? (
         <section>
           <div>
-            <aside className='mt-5 h-full pl-12 w-70 pr-5 overflow-auto border-r border-zinc-600 fixed'>
+            <aside className='aside mt-5 h-full pl-12 w-70 pr-5 overflow-auto border-r border-zinc-600 fixed'>
               <div><h1 className='text-white text-3xl mt-2 border-b-2 pb-3 border-zinc-600'>Your Snippets</h1></div>
               <div className={`text-white hover:bg-purple-900 cursor-pointer p-3 mt-4 ${!selectedID ? 'bg-purple-900' : ''}`} onClick={() => setSelectedID(null)}>All</div>
               <ul>

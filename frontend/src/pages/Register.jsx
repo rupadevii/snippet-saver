@@ -79,7 +79,7 @@ export default function Register() {
                     type="text" 
                     placeholder="Enter your name" 
                     value={formData.username}
-                    className='my-3 p-3 w-75 border border-zinc-500 rounded-sm' 
+                    className='m-2 p-3 w-75 border border-zinc-500 rounded-sm' 
                     onChange={handleChange}
                 />
                 {errors.username && (<p className='text-red-600 self-start ml-3'>{errors.username}</p>)}
@@ -87,9 +87,9 @@ export default function Register() {
                 <input 
                     name="email" 
                     type="email" 
-                    placeholder="Enter your email" 
+                    placeholder="Enter email" 
                     value={formData.email}
-                    className='my-3 p-3 w-75 border border-zinc-500 rounded-sm' 
+                    className='m-2 p-3 w-75 border border-zinc-500 rounded-sm' 
                     onChange={handleChange}
                 />
                 {errors.email && (<p className='text-red-600 self-start ml-3'>{errors.email}</p>)}
@@ -99,7 +99,7 @@ export default function Register() {
                     type="password" 
                     placeholder='Enter password' 
                     value={formData.password}
-                    className='m-3 p-3 w-75 border border-zinc-500 rounded-sm' 
+                    className='m-2 p-3 w-75 border border-zinc-500 rounded-sm' 
                     onChange={handleChange}
                 />
                 {errors.password && (<p className='text-red-600 self-start ml-3'>{errors.password}</p>)}

@@ -6,3 +6,30 @@
   font-family: "Source Sans Pro";
   height: 100vh;
 }
+
+button{
+  cursor: pointer;
+}
+
+.aside::-webkit-scrollbar{
+  width : 6px;
+}
+
+.aside::-webkit-scrollbar-thumb{
+  background-color: rgb(87, 87, 87);
+  border-radius: 10px;
+}
+
+.cm-scroller::-webkit-scrollbar{
+  width : 8px;
+  height: 8px;
+}
+
+.cm-scroller::-webkit-scrollbar-thumb{
+  background-color: rgb(87, 87, 87);
+  border-radius: 10px;
+}
+
+.cm-editor{
+  font-size: 16px;
+}
