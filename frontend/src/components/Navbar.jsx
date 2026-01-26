@@ -1,10 +1,12 @@
+import { useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { AuthContext } from '../context/AuthContext';
 
 export default function Navbar() {
   const navigate = useNavigate()
-  const location = useLocation()
- 
-  const token = localStorage.getItem("token")
+  const location = useLocation();
+  const token = useContext(AuthContext)
+
   const isAbsent = location.pathname === "/" || location.pathname === "/register" || location.pathname === "/login";
   const addSnippet = location.pathname === "/add-snippet"
 

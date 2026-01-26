@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { fetchAPI } from '../utils/api';
 
 export default function Register() {
     const [formData, setFormData] = useState({username: "", email: "", password: ""});
     const [msg, setMsg] = useState({});
     const [errors, setErrors] = useState({username: "", email: "", password: ""})
     const navigate = useNavigate();
-    const URL = import.meta.env.VITE_API_URL;
     const emailValidator = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const isFormValid = !errors.username && !errors.email && !errors.password
 
-    const handleChange = (event) => {
-        const {name, value} = event.target;
-        setFormData({...formData, [name]: value.trim()})
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setFormData((prev) => ({...prev, [name]: value.trim()}))
         
         let error = ""
         if(name === "username" && value.trim().length<4){
@@ -27,7 +27,7 @@ export default function Register() {
             error = "Password must be at least 8 chars long!";
         }
 
-        setErrors(prev => ({...prev, [name]: error}));
+        setErrors((prev) => ({...prev, [name]: error}));
     }
     
     const handleSubmit = async (e) => {
@@ -43,17 +43,11 @@ export default function Register() {
 
         if(formData.username && formData.email && formData.password){
             try{
-                const res = await fetch(`${URL}/auth/register`, {
-                    method: "POST",
-                    headers: {"Content-Type":"application/json"},
-                    body: JSON.stringify(formData)
-                });
-                const data = await res.json();
+                const data = await fetchAPI('auth/register', {formData})
                 setMsg({success: data.msg || "Registered successfully!"})
                 setTimeout(() => {
                     navigate('/login')
-                }, 2000)
-    
+                }, 2000)  
             }
             catch(error){
                 setMsg({error: "Registration failed. Try again."});

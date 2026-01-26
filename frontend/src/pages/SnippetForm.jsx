@@ -1,7 +1,9 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Editor from "@monaco-editor/react";
 import { languages } from "../utils/languages";
+import { AuthContext } from "../context/AuthContext";
+import { fetchAPI } from "../utils/api";
 
 export default function SnippetForm() {
   const [formData, setFormData] = useState({
@@ -11,6 +13,7 @@ export default function SnippetForm() {
     description: "",
   });
   const navigate = useNavigate();
+  const token = useContext(AuthContext)
   const URL = import.meta.env.VITE_API_URL;
   const [errors, setErrors] = useState({ title: "", language: "", code: "" });
   const isFormValid = !errors.title && !errors.language && !errors.code;
@@ -34,22 +37,10 @@ export default function SnippetForm() {
     setErrors(submitErrors);
 
     if (formData.title && formData.language && formData.code) {
-      const token = localStorage.getItem("token");
-
       try {
-        const res = await fetch(`${URL}/snippets/`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(formData),
-        });
-
-        await res.json();
+        const data = await fetchAPI('snippets/', {formData, token})
         setFormData({ title: "", language: "", code: "", description: "" });
-
-        if (res.ok) {
+        if(data){
           setTimeout(() => {
             navigate("/snippets");
           }, 1500);
@@ -96,7 +87,8 @@ export default function SnippetForm() {
             id="language"
             className="p-3 my-3 border w-100 border-zinc-500 rounded-sm"
             onChange={handleChange}
-          >
+          > 
+            <option>Select</option>
             {languages.map((language, index) => (
               <option className="bg-zinc-900" value={language} key={index}>
                 {language}

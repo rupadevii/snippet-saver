@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { fetchAPI } from "../utils/api";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [msg, setMsg] = useState("");
   const [errors, setErrors] = useState({ email: "", password: "" });
   const navigate = useNavigate();
-  const URL = import.meta.env.VITE_API_URL;
   const isFormValid = !errors.email && !errors.password;
   const emailValidator = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   function handleChange(e) {
     const {name, value} = e.target;
-    setFormData({...formData, [name]: value.trim()})
+    setFormData((prev) => ({...prev, [name]: value.trim()}))
 
     let error = ""
     
@@ -40,25 +40,13 @@ export default function Login() {
 
     if (formData.email && formData.password) {
       try {
-        const res = await fetch(`${URL}/auth/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
-
-        const data = await res.json();
-        
-        if (res.ok) {
-          if (data.token) {
-            localStorage.setItem("token", data.token);
-          }
-          setTimeout(() => {
-            navigate("/snippets");
-          }, 1000);
+        const data = await fetchAPI('auth/login', {formData})
+        if (data.token) {
+          localStorage.setItem("token", data.token);
         }
-        else{
-          setMsg(data.msg)
-        }
+        setTimeout(() => {
+          navigate("/snippets");
+        }, 1000);
       } catch(error) {
         setMsg("Login failed. Try again!");
         console.log(error);
