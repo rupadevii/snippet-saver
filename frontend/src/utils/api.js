@@ -1,9 +1,8 @@
 const URL = import.meta.env.VITE_API_URL;
 
-export const fetchAPI = async (path, {formData, token}) => {
+export const fetchAPI = async (path, method, {formData, token}) => {
     let body;
-    let method = formData ? "POST" : "GET";
-    let headers = token ? {
+    const headers = token ? {
         "Content-Type":"application/json",
         "Authorization": `Bearer ${token}`
     } : {

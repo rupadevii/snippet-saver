@@ -5,70 +5,70 @@ import { AuthContext } from '../context/AuthContext';
 import { fetchAPI } from '../utils/api';
 
 export default function Snippets() {
-  const [snippets , setSnippets] = useState([]);
-  const [selectedID, setSelectedID] = useState(null)
-  const token = useContext(AuthContext)
-  
-  useEffect(() => {
+    const [snippets , setSnippets] = useState([]);
+    const [selectedID, setSelectedID] = useState(null)
+    const token = useContext(AuthContext)
+    
+    useEffect(() => {
+        loadSnippets()
+    }, [])
+
     const loadSnippets = async () => {
-      try{
-        const data = await fetchAPI('snippets/', {token} )
-        setSnippets(data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)))
-      }
-      catch(error){
-        console.log('There was an error in displaying the snippets', error)
-      }
+        try{
+            const data = await fetchAPI('snippets/', "GET", {token} )
+            setSnippets(data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)))
+        }
+        catch(error){
+            console.log('There was an error in displaying the snippets', error)
+        }
     }
-    loadSnippets()
-  }
-  , [])
 
-  const filteredSnippets = selectedID ? snippets.filter(snippet => snippet.id === selectedID) : snippets
+    const filteredSnippets = selectedID ? snippets.filter(snippet => snippet.id === selectedID) : snippets
  
-  return (
-    <main className='relative'>
-      {snippets.length>0 ? (
-        <section>
-          <div>
-            <aside className='aside mt-5 h-full pl-12 w-70 pr-5 overflow-auto border-r border-zinc-600 fixed'>
-              <div>
-                <h1 className='text-white text-3xl mt-2 border-b-2 pb-3 border-zinc-600'>Your Snippets</h1>
-              </div>
-              <div 
-                className={`text-white hover:bg-purple-900 cursor-pointer p-3 mt-4 ${!selectedID ? 'bg-purple-900' : ''}`} 
-                onClick={() => setSelectedID(null)}>
-                  All
-              </div>
-              <ul>
-                {snippets.map((snippet) => (
-                  <li 
-                    key={snippet.id} 
-                    className={`text-white hover:bg-purple-900 my-1 cursor-pointer p-3 ${selectedID === snippet.id ? 'bg-purple-900' : ''}`} 
-                    onClick={() => setSelectedID(snippet.id)}>
-                      {snippet.title}
-                  </li>
-                ))}
-              </ul>
-            </aside>
+    return (
+        <main className='relative'>
+            {snippets.length>0 ? (
+                <section>
+                    <div>
+                        <aside className='aside mt-5 h-full pl-12 w-70 pr-5 overflow-auto border-r border-zinc-600 fixed'>
+                            <div>
+                                <h1 className='text-white text-3xl mt-2 border-b-2 pb-3 border-zinc-600'>Your Snippets</h1>
+                            </div>
+                            <div 
+                                className={`text-white hover:bg-purple-900 cursor-pointer p-3 mt-4 ${!selectedID ? 'bg-purple-900' : ''}`} 
+                                onClick={() => setSelectedID(null)}>
+                                All
+                            </div>
+                            <ul>
+                                {snippets.map((snippet) => (
+                                <li 
+                                    key={snippet.id} 
+                                    className={`text-white hover:bg-purple-900 my-1 cursor-pointer p-3 ${selectedID === snippet.id ? 'bg-purple-900' : ''}`} 
+                                    onClick={() => setSelectedID(snippet.id)}>
+                                    {snippet.title}
+                                </li>
+                                ))}
+                            </ul>
+                        </aside>
 
-            <div className='p-7 h-full ml-70'>
-              <div className='gap-5'>
-                {filteredSnippets.map((snippet) => (
-                  <SnippetCard snippet={snippet} key={snippet.id}/>
-                ))}  
-              </div>
-            </div>
-          </div>
-        </section>
-      ) : (
-        <div className='flex justify-center text-white flex-col pt-24 items-center'>
-          <h1 className='text-3xl my-5'>You have not saved any snippets yet!</h1>
-          <Link 
-            to="/add-snippet" 
-            className='bg-purple-900 px-5 py-3 rounded-xl hover:bg-purple-800 text-white cursor-pointer'>Add a snippet
-          </Link>
-        </div>
-      )}
-    </main>
-  )
+                        <div className='p-7 h-full ml-70'>
+                            <div className='flex flex-col gap-5'>
+                                {filteredSnippets.map((snippet) => (
+                                <SnippetCard snippet={snippet} key={snippet.id} loadSnippets={loadSnippets}/>
+                                ))}  
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            ) : (
+                <div className='flex justify-center text-white flex-col pt-24 items-center'>
+                    <h1 className='text-3xl my-5'>You have not saved any snippets yet!</h1>
+                    <Link 
+                        to="/add-snippet" 
+                        className='bg-purple-900 px-5 py-3 rounded-xl hover:bg-purple-800 text-white cursor-pointer'>Add a snippet
+                    </Link>
+                </div>
+            )}
+        </main>
+    )
 }

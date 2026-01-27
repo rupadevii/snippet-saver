@@ -3,60 +3,60 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext';
 
 export default function Navbar() {
-  const navigate = useNavigate()
-  const location = useLocation();
-  const token = useContext(AuthContext)
+    const navigate = useNavigate()
+    const location = useLocation();
+    const token = useContext(AuthContext)
 
-  const isAbsent = location.pathname === "/" || location.pathname === "/register" || location.pathname === "/login";
-  const addSnippet = location.pathname === "/add-snippet"
+    const isAbsent = location.pathname === "/" || location.pathname === "/register" || location.pathname === "/login";
+    const addSnippet = location.pathname === "/add-snippet"
 
-  if(isAbsent) return null;
+    if(isAbsent) return null;
 
-  function handleLogOut(){
-    localStorage.removeItem("token");
-    setTimeout(() => {
-      navigate("/")
-    }, 1500)
-  }
+    function handleLogOut(){
+        localStorage.removeItem("token");
+        setTimeout(() => {
+        navigate("/")
+        }, 1500)
+    }
 
-  return (
-    <header className='sticky top-0 z-10'>
-        <nav className='py-5 px-30 flex text-white justify-between bg-purple-900'>
-            <div>SnippetSaver</div>
-            <div>
-              {token ? (
-                <ul className='flex gap-10'>
-                  {addSnippet ? (
-                    <li>
-                      <Link 
-                        to="/snippets"
-                        className='hover:underline underline-offset-2'>
-                          Snippets
-                      </Link>
+    return (
+        <header className='sticky top-0 z-10'>
+            <nav className='py-5 px-30 flex text-white justify-between bg-purple-900'>
+                <div>SnippetSaver</div>
+                <div>
+                {token ? (
+                    <ul className='flex gap-10'>
+                    {addSnippet ? (
+                        <li>
+                        <Link 
+                            to="/snippets"
+                            className='hover:underline underline-offset-2'>
+                            Snippets
+                        </Link>
+                        </li>
+                    ) : (
+                        <li>
+                        <Link 
+                            to="/add-snippet" 
+                            className='hover:underline underline-offset-2'>
+                            Add Snippet
+                        </Link>
+                        </li>
+                    )}
+                    <li 
+                        onClick={handleLogOut} 
+                        className='cursor-pointer hover:underline underline-offset-2'>
+                        Logout
                     </li>
-                  ) : (
-                    <li>
-                      <Link 
-                        to="/add-snippet" 
-                        className='hover:underline underline-offset-2'>
-                          Add Snippet
-                      </Link>
-                    </li>
-                  )}
-                  <li 
-                    onClick={handleLogOut} 
-                    className='cursor-pointer hover:underline underline-offset-2'>
-                      Logout
-                  </li>
-                </ul>
-              ) : (
-                <ul className='flex gap-10'>
-                  <li><Link to="/login">Login</Link></li>
-                  <li><Link to="/register">Register</Link></li>
-                </ul>
-              )}
-            </div>
-        </nav>
-    </header>
-  )
+                    </ul>
+                ) : (
+                    <ul className='flex gap-10'>
+                    <li><Link to="/login">Login</Link></li>
+                    <li><Link to="/register">Register</Link></li>
+                    </ul>
+                )}
+                </div>
+            </nav>
+        </header>
+    )
 }

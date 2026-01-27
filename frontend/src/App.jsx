@@ -4,6 +4,9 @@ import Snippets from "./pages/Snippets"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
 import SnippetForm from "./pages/SnippetForm"
+import Modal from 'react-modal'
+
+Modal.setAppElement('#root');
 
 function App() {
   return (

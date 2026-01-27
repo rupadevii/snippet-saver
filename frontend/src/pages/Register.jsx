@@ -43,7 +43,7 @@ export default function Register() {
 
         if(formData.username && formData.email && formData.password){
             try{
-                const data = await fetchAPI('auth/register', {formData})
+                const data = await fetchAPI('auth/register', "POST", {formData})
                 setMsg({success: data.msg || "Registered successfully!"})
                 setTimeout(() => {
                     navigate('/login')

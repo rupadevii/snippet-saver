@@ -19,11 +19,10 @@ export default function SnippetForm() {
   const isFormValid = !errors.title && !errors.language && !errors.code;
 
   function handleChange(e) {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const {name, value} = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value.trim() }));
 
-    Object.entries(formData).forEach(([key, value]) => {
-      if (value.trim()) setErrors((prev) => ({ ...prev, [key]: "" }));
-    });
+    if(value.trim()) setErrors((prev) => ({...prev, [name] : ""}))
   }
 
   const handleSubmit = async (e) => {
@@ -38,7 +37,7 @@ export default function SnippetForm() {
 
     if (formData.title && formData.language && formData.code) {
       try {
-        const data = await fetchAPI('snippets/', {formData, token})
+        const data = await fetchAPI('snippets/', "POST", {formData, token})
         setFormData({ title: "", language: "", code: "", description: "" });
         if(data){
           setTimeout(() => {
@@ -110,6 +109,10 @@ export default function SnippetForm() {
             defaultValue="// some comment"
             onChange={(value) => {
               setFormData((prev) => ({ ...prev, code: value }));
+              setErrors((prev) => ({...prev, code: ""}))
+            }}
+            options={{
+                minimap: {enabled: false},
             }}
             value={formData.code}
             className="mt-5 mb-3"
